@@ -1,18 +1,27 @@
 <template>
     <section class="home d-flex align-items-center">
         <div class="container">
-            <div class="rounded text-white padding-30 bg-grey">
+            <div class="rounded-20 text-white padding-30 bg-grey">
                 <div class="row">
                     <div class="col-md-4 d-flex">
-                        <div class="btn-control pt-5 pb-5 p-3">
-                            <div class="btn-group-vertical">
-                                <button class="btn btn-success btn-sm"><i class="fas fa-cog"></i></button>
-                                <button class="btn btn-success btn-sm"><i class="fas fa-forward"></i></button>
+                        <div class="btn-control pt-5 pb-5 p-1">
+                            <div class="btn-group-vertical pt-4">
+                                <button class="btn btn-success bg-transparent border-0 f-22" data-toggle="modal" data-target="#configModal"><i class="fas fa-cog"></i></button>
                             </div>
                         </div>
-                        <h1 class="text-white display-1 p-3 text-center">
-                            <b>{{ minutes }}:{{ seconds }}</b>
-                        </h1>
+                        <div class="col-lg-12">
+                            <div class="col-lg-12">
+                                <h1 class="text-white display-1 pt-3 text-center">
+                                    <b>{{ minutes }}:{{ seconds }}</b>
+                                </h1>
+                                <div class="btn-group btn-group-sm mb-0 mb-3" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-default" @click="setRound('work')">Work time</button>
+                                    <button type="button" class="btn btn-default" @click="setRound('break')">Short break</button>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
                     <div class="col-md-8 text-white">
                         <div class="d-flex p-5 float-right">
@@ -34,54 +43,74 @@
                 </div>
             </div>
         </div>
+        <config-modal :config="timerConfig" />
     </section>
 </template>
 
 <script>
+    import configModal from '../components/ConfigModal'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'Home',
+        components: {
+            configModal
+        },
         data() {
             return {
                 timerConfig: null,
+                currentTime: 0,
                 timer: null,
                 timerStarted: false
             }
         },
         created() {
             this.timerConfig = this.$store.getters.getTimerConfig
+            this.currentTime = this.$store.getters.getWorkTime
         },
         methods: {
+            toSeconds (minutes) {
+                return minutes * 60
+            },
             startTimer() {
                 this.timerStarted = true
-                this.timer = setInterval(() => this.countdown(), 1000);
+                this.timer = setInterval(this.countdown, 1000);
             },
             stopTimer() {
                 clearInterval(this.timer);
                 this.timer = null;
             },
             resetCurrentRound() {
-                this.timerConfig.currentTime = 5 * 60//get from config
+                //
             },
             padTime(time) {
                 return (time < 10 ? '0' : '') + time;
             },
             countdown() {
-                if (this.timerConfig.currentTime >= 1) {
-                    this.timerConfig.currentTime--;
+                if (this.currentTime >= 1) {
+                    console.log(this.timer)
+                    this.currentTime--;
                 } else {
-                    this.timer = null
-                    this.timerConfig.currentTime = 0;
+                    this.stopTimer()
+                    if(this.timerConfig.autoNext === true){
+                        this.setRound('break')
+                        this.startTimer()
+                    }
                 }
+            },
+            setRound (round) {
+                this.stopTimer()
+                this.currentTime = this.toSeconds(this.timerConfig.rounds[round])
             }
         },
         computed: {
+            ...mapGetters['timerConfig'],
             minutes() {
-                const minutes = Math.floor(this.timerConfig.currentTime / 60);
+                const minutes = Math.floor(this.currentTime / 60);
                 return this.padTime(minutes);
             },
             seconds() {
-                const seconds = this.timerConfig.currentTime - (this.minutes * 60);
+                const seconds = this.currentTime - (this.minutes * 60);
                 return this.padTime(seconds);
             }
         }
