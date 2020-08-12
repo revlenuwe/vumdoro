@@ -4,7 +4,7 @@ export default {
         timerConfig: {
             rounds: {
                 work: 5,
-                break: 2,
+                break: 1,
             },
             autoNext: true,
             audio: 'audio'

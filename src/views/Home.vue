@@ -60,6 +60,7 @@
             return {
                 timerConfig: null,
                 currentTime: 0,
+                roundStatus: 'work',
                 timer: null,
                 timerStarted: false
             }
@@ -93,13 +94,21 @@
                 } else {
                     this.stopTimer()
                     if(this.timerConfig.autoNext === true){
-                        this.setRound('break')
+                        switch (this.roundStatus) {
+                            case "work":
+                                this.setRound('break')
+                                break
+                            case "break":
+                                this.setRound('work')
+                                break
+                        }
                         this.startTimer()
                     }
                 }
             },
             setRound (round) {
                 this.stopTimer()
+                this.roundStatus = round
                 this.currentTime = this.toSeconds(this.timerConfig.rounds[round])
             }
         },
