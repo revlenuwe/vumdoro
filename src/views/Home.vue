@@ -17,10 +17,17 @@
                     <div class="col-md-8 text-white">
                         <div class="d-flex p-5 float-right">
                             <div class="btn-control p-3">
-                                <button class="btn btn-lg btn-primary font-weight-bold f-22" @click="startTimer">START</button>
+                                <button class="btn btn-lg btn-primary font-weight-bold f-22" v-if="!timerStarted"
+                                        @click="startTimer">START
+                                </button>
+                                <button class="btn btn-lg btn-primary font-weight-bold f-22" v-else @click="stopTimer">
+                                    STOP
+                                </button>
                             </div>
                             <div class="btn-control p-3">
-                                <button class="btn btn-lg btn-default font-weight-bold f-22">RESET</button>
+                                <button class="btn btn-lg btn-default font-weight-bold f-22" @click="resetCurrentRound">
+                                    RESET
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -36,37 +43,45 @@
         name: 'Home',
         data() {
             return {
-              totalTime: 5 * 60,
-              timer: null
+                timerConfig: null,
+                timer: null,
+                timerStarted: false
             }
+        },
+        created() {
+            this.timerConfig = this.$store.getters.getTimerConfig
         },
         methods: {
             startTimer() {
+                this.timerStarted = true
                 this.timer = setInterval(() => this.countdown(), 1000);
             },
             stopTimer() {
                 clearInterval(this.timer);
                 this.timer = null;
             },
+            resetCurrentRound() {
+                this.timerConfig.currentTime = 5 * 60//get from config
+            },
             padTime(time) {
                 return (time < 10 ? '0' : '') + time;
             },
             countdown() {
-                if (this.totalTime >= 1) {
-                    this.totalTime--;
+                if (this.timerConfig.currentTime >= 1) {
+                    this.timerConfig.currentTime--;
                 } else {
                     this.timer = null
-                    this.totalTime = 0;
+                    this.timerConfig.currentTime = 0;
                 }
             }
         },
         computed: {
             minutes() {
-                const minutes = Math.floor(this.totalTime / 60);
+                const minutes = Math.floor(this.timerConfig.currentTime / 60);
                 return this.padTime(minutes);
             },
             seconds() {
-                const seconds = this.totalTime - (this.minutes * 60);
+                const seconds = this.timerConfig.currentTime - (this.minutes * 60);
                 return this.padTime(seconds);
             }
         }
