@@ -3,18 +3,26 @@ export default {
     state: {
         timerConfig: {
             rounds: {
-                work: 5,
-                break: 1,
+                work: 25,
+                break: 5,
             },
             autoNext: true,
-            audio: 'audio'
+            audioNotification: true
         }
     },
     mutations: {
-
+        //update all config or switch settings -> tabs
+        setRoundsTime (state, rounds) {
+            return state.timerConfig.rounds = rounds
+        },
     },
     actions: {
-
+        setRoundsTime ({commit}, rounds) {
+            commit('setRoundsTime', rounds)
+        },
+        setNotification ({commit}) {
+            commit('setNotification')
+        }
     },
     getters: {
         getTimerConfig (state) {

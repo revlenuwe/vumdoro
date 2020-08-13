@@ -10,22 +10,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-lg-4">
-                            <input type="number" class="form-control" v-model="config.rounds.work" placeholder="Work time" required="required">
+                        <div class="form-group col-lg-6">
+                            <input type="number" class="form-control" v-model="rounds.work" placeholder="Work time" required="required">
                             <div class="help-block with-errors"></div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            <input type="number" class="form-control" v-model="config.rounds.shortBreak" placeholder="Short break" required="required">
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <input type="number" class="form-control" v-model="config.rounds.longBreak" placeholder="Long break" required="required" >
+                        <div class="form-group col-lg-6">
+                            <input type="number" class="form-control" v-model="rounds.break" placeholder="Short break" required="required">
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" @click="updateRoundsTime">Save</button>
                 </div>
             </div>
         </div>
@@ -39,6 +35,17 @@
             config: {
                 type: Object,
                 required: true
+            }
+        },
+        data () {
+            return {
+                rounds: this.config.rounds
+            }
+        },
+        methods: {
+            updateRoundsTime () {
+                //vuelidate
+                this.$store.dispatch('setRoundsTime', this.rounds)
             }
         }
     }
