@@ -3,18 +3,20 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="configModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="configModalLabel">Settings</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-lg-6">
+                        <div class="form-group text-left col-lg-6">
+                            <label>Work time</label>
                             <input type="number" class="form-control" v-model="rounds.work" placeholder="Work time" required="required">
                             <div class="help-block with-errors"></div>
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group text-left col-lg-6">
+                            <label>Short break</label>
                             <input type="number" class="form-control" v-model="rounds.break" placeholder="Short break" required="required">
                             <div class="help-block with-errors"></div>
                         </div>
@@ -41,7 +43,6 @@
         },
         data () {
             return {
-                timerConfig: 11,
                 rounds: this.config.rounds
             }
         },
