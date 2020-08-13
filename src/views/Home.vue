@@ -11,10 +11,10 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="col-lg-12">
-                                <h1 class="text-white display-1 pt-3 text-center">
+                                <h1 class="text-white display-1 mb-0 pt-3 text-center">
                                     <b>{{ minutes }}:{{ seconds }}</b>
                                 </h1>
-                                <div class="btn-group btn-group-sm mb-0 mb-3" role="group" aria-label="Basic example">
+                                <div class="btn-group btn-group-sm w-100 mb-3" role="group" >
                                     <button type="button" class="btn btn-default" @click="setRound('work')">Work time</button>
                                     <button type="button" class="btn btn-default" @click="setRound('break')">Short break</button>
                                 </div>
@@ -67,7 +67,7 @@
         },
         created() {
             this.timerConfig = this.$store.getters.getTimerConfig
-            this.currentTime = this.$store.getters.getWorkTime
+            this.setCurrentTime(this.$store.getters.getWorkTime)
         },
         methods: {
             toSeconds (minutes) {
@@ -78,18 +78,19 @@
                 this.timer = setInterval(this.countdown, 1000);
             },
             stopTimer() {
+                this.timerStarted = false
                 clearInterval(this.timer);
                 this.timer = null;
             },
             resetCurrentRound() {
-                //
+                this.stopTimer()
+                this.setCurrentTime(this.timerConfig.rounds[this.roundStatus])
             },
             padTime(time) {
                 return (time < 10 ? '0' : '') + time;
             },
             countdown() {
                 if (this.currentTime >= 1) {
-                    console.log(this.timer)
                     this.currentTime--;
                 } else {
                     this.stopTimer()
@@ -106,10 +107,13 @@
                     }
                 }
             },
+            setCurrentTime (time) {
+                this.currentTime = this.toSeconds(time)
+            },
             setRound (round) {
                 this.stopTimer()
                 this.roundStatus = round
-                this.currentTime = this.toSeconds(this.timerConfig.rounds[round])
+                this.setCurrentTime(this.timerConfig.rounds[round])
             }
         },
         computed: {
