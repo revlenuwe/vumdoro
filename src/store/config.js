@@ -25,11 +25,12 @@ export default {
         }
     },
     getters: {
-        getTimerConfig (state) {
+        timerConfig (state) {
             return state.timerConfig
         },
-        getWorkTime (state) {
+        workTime (state) {
             return state.timerConfig.rounds.work
-        }
+        },
+
     }
 }

@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="updateRoundsTime">Save</button>
+                    <button type="button" class="btn btn-primary"  @click="updateRoundsTime">Save</button>
                 </div>
             </div>
         </div>
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+    import {mapState} from "vuex";
+
     export default {
         name: "ConfigModal",
         props: {
@@ -39,6 +41,7 @@
         },
         data () {
             return {
+                timerConfig: 11,
                 rounds: this.config.rounds
             }
         },
@@ -46,8 +49,9 @@
             updateRoundsTime () {
                 //vuelidate
                 this.$store.dispatch('setRoundsTime', this.rounds)
+                this.$emit('update')
             }
-        }
+        },
     }
 </script>
 

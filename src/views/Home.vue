@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <config-modal :config="timerConfig" />
+        <config-modal :config="timerConfig" @update="setTimerConfig" />
     </section>
 </template>
 
@@ -66,8 +66,9 @@
             }
         },
         created() {
-            this.timerConfig = this.$store.getters.getTimerConfig
-            this.setCurrentTime(this.$store.getters.getWorkTime)
+            // this.setTimerConfig()
+            this.timerConfig = this.$store.getters.timerConfig
+            this.setCurrentTime(this.$store.getters.workTime)
         },
         methods: {
             toSeconds (minutes) {
@@ -83,8 +84,7 @@
                 this.timer = null;
             },
             resetCurrentRound() {
-                this.stopTimer()
-                this.setCurrentTime(this.timerConfig.rounds[this.roundStatus])
+                this.setRound(this.roundStatus)
             },
             padTime(time) {
                 return (time < 10 ? '0' : '') + time;
@@ -103,9 +103,15 @@
                                 this.setRound('work')
                                 break
                         }
+                        this.audioNotification()
                         this.startTimer()
                     }
                 }
+            },
+            setTimerConfig () {
+                console.log('updated')
+                this.timerConfig = this.$store.getters.timerConfig
+                this.setRound(this.roundStatus)
             },
             setCurrentTime (time) {
                 this.currentTime = this.toSeconds(time)
@@ -114,10 +120,13 @@
                 this.stopTimer()
                 this.roundStatus = round
                 this.setCurrentTime(this.timerConfig.rounds[round])
+            },
+            audioNotification () {
+                let audio = new Audio('/beep.mp3')
+                audio.play()
             }
         },
         computed: {
-            ...mapGetters['timerConfig'],
             minutes() {
                 const minutes = Math.floor(this.currentTime / 60);
                 return this.padTime(minutes);
