@@ -12,18 +12,32 @@
                     <div class="row">
                         <div class="form-group text-left col-lg-6">
                             <label>Work time</label>
-                            <input type="number" class="form-control" v-model="rounds.work" placeholder="Work time" required="required">
+                            <input type="number" class="form-control" v-model="localConfig.rounds.work" placeholder="Work time" required="required">
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group text-left col-lg-6">
                             <label>Short break</label>
-                            <input type="number" class="form-control" v-model="rounds.break" placeholder="Short break" required="required">
+                            <input type="number" class="form-control" v-model="localConfig.rounds.break" placeholder="Short break" required="required">
                             <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group col-lg-12 d-flex justify-content-between">
+                            <span>Auto start next round</span>
+                            <div>
+                                <input class="tgl tgl-flat" id="autoNext" v-model="localConfig.autoNext" type="checkbox"/>
+                                <label class="tgl-btn" for="autoNext"></label>
+                            </div>
+                        </div>
+                        <div class="form-group  col-lg-12 d-flex justify-content-between">
+                            <span>Audio notification</span>
+                            <div>
+                                <input class="tgl tgl-flat" id="audio" v-model="localConfig.audioNotification" type="checkbox"/>
+                                <label class="tgl-btn" for="audio"></label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"  @click="updateRoundsTime">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" @click="updateRoundsTime">Save</button>
                 </div>
             </div>
         </div>
@@ -31,7 +45,6 @@
 </template>
 
 <script>
-    import {mapState} from "vuex";
 
     export default {
         name: "ConfigModal",
@@ -43,13 +56,17 @@
         },
         data () {
             return {
-                rounds: this.config.rounds
+                localConfig: {
+                    audioNotification: this.config.audioNotification,
+                    autoNext: this.config.autoNext,
+                    rounds: this.config.rounds
+                }
             }
         },
         methods: {
             updateRoundsTime () {
                 //vuelidate
-                this.$store.dispatch('setRoundsTime', this.rounds)
+                this.$store.dispatch('updateTimerConfig', this.localConfig)
                 this.$emit('update')
             }
         },

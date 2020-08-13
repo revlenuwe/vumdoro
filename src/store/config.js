@@ -12,17 +12,15 @@ export default {
     },
     mutations: {
         //update all config or switch settings -> tabs
-        setRoundsTime (state, rounds) {
-            return state.timerConfig.rounds = rounds
+        updateTimerConfig (state, config) {
+            return state.timerConfig = config
         },
     },
     actions: {
-        setRoundsTime ({commit}, rounds) {
-            commit('setRoundsTime', rounds)
+        updateTimerConfig ({commit}, config) {
+            commit('updateTimerConfig', config)
         },
-        setNotification ({commit}) {
-            commit('setNotification')
-        }
+
     },
     getters: {
         timerConfig (state) {

@@ -94,7 +94,10 @@
                     this.currentTime--;
                 } else {
                     this.stopTimer()
-                    if(this.timerConfig.autoNext === true){
+                    if (this.timerConfig.audioNotification === true){
+                        this.audioNotification()
+                    }
+                    if (this.timerConfig.autoNext === true){
                         switch (this.roundStatus) {
                             case "work":
                                 this.setRound('break')
@@ -103,7 +106,6 @@
                                 this.setRound('work')
                                 break
                         }
-                        this.audioNotification()
                         this.startTimer()
                     }
                 }
