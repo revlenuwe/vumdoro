@@ -6,7 +6,7 @@ A simply Vue.js pomodoro timer
 ## Quick Start
 
 1. Download this repository wherever you want
-```
+```bash
 # using git clone
 git clone https://github.com/uverogre/vumdoro.git
 ```
