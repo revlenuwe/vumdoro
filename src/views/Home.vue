@@ -66,7 +66,6 @@
             }
         },
         created() {
-            // this.setTimerConfig()
             this.timerConfig = this.$store.getters.timerConfig
             this.setCurrentTime(this.$store.getters.workTime)
         },
