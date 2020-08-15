@@ -6,7 +6,7 @@
                     <div class="col-md-4 d-flex">
                         <div class="btn-control pt-5 pb-5 p-1">
                             <div class="btn-group-vertical pt-4">
-                                <button class="btn btn-success bg-transparent border-0 f-22" data-toggle="modal" data-target="#configModal"><i class="fas fa-cog"></i></button>
+                                <button class="btn btn-success bg-transparent border-0 f-22" v-b-modal.configModal><i class="fas fa-cog"></i></button>
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -106,11 +106,12 @@
                                 break
                         }
                         this.startTimer()
+                    }else{
+                        this.setRound(this.roundStatus)
                     }
                 }
             },
             setTimerConfig () {
-                console.log('updated')
                 this.timerConfig = this.$store.getters.timerConfig
                 this.setRound(this.roundStatus)
             },
